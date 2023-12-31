@@ -10,8 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
-import django_heroku
-import gunicorn
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -151,4 +149,3 @@ LOGIN_REDIRECT_URL = 'tarefas'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
 
-django_heroku.settings(locals())
