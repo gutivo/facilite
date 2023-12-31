@@ -1,1 +1,1 @@
-web: gunicorn progressao.wsgi
+web: gunicorn appweb.wsgi
