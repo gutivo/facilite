@@ -1,0 +1,160 @@
+{% extends 'modelo2.html' %}
+{% load static %}
+
+{% block conteudo %}
+<style>
+    body {
+        background: url('{% static "img/bbb.avif" %}') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row">
+
+        <!-- Gráfico de Coluna -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Atribuições Durante os meses</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="colunaChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico de Pizza -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Status total dos Processos</h5>
+                </div>
+                <div class="card-body" style="height: 290px; width: 300px;">
+                    <canvas id="pizzaChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico de Barra -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Atribuições por Órgãos/Empresas</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="barraChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Dados para o gráfico de coluna
+        var colunaData = {
+            labels: [{% for item in quantidades_por_mes %}'{{  item.data__month }}', {% endfor %}],
+        datasets: [{
+            label: 'Quantidade por Mês',
+            data: [{% for item in quantidades_por_mes %}{{ item.quantidade }}, {% endfor %}],
+        backgroundColor: 'rgba(75, 192, 192, 0.7)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+            }]
+        };
+
+    // Configuração do gráfico de coluna
+    var colunaOptions = {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+
+    // Criando o gráfico de coluna
+    var colunaChart = new Chart(document.getElementById('colunaChart'), {
+        type: 'bar',
+        data: colunaData,
+        options: colunaOptions
+    });
+
+    // Dados para o gráfico de pizza
+    var pizzaData = {
+        labels: [{% for item in quantidades_por_status %}'{{ item.status }}', {% endfor %}],
+    datasets: [{
+        data: [{% for item in quantidades_por_status %}{{ item.quantidade }}, {% endfor %}],
+        backgroundColor: [
+            'rgba(255, 99, 132, 0.7)',
+            'rgba(75, 192, 192, 0.7)',
+            'rgba(255, 205, 86, 0.7)',
+            'rgba(54, 162, 235, 0.7)',
+            'rgba(153, 102, 255, 0.7)',
+        ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(255, 205, 86, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(153, 102, 255, 1)',
+            ],
+                borderWidth: 1
+            }]
+        };
+
+    // Configuração do gráfico de pizza
+    var pizzaOptions = {};
+
+    // Criando o gráfico de pizza
+    var pizzaChart = new Chart(document.getElementById('pizzaChart'), {
+        type: 'pie',
+        data: pizzaData,
+        options: pizzaOptions
+    });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Dados para o gráfico de barra
+        var barraData = {
+            labels: [{% for item in quantidades_por_campo %}'{{ item.campo__nome }}', {% endfor %}],
+        datasets: [{
+            label: 'Quantidade por Campo',
+            data: [{% for item in quantidades_por_campo %}{{ item.quantidade }}, {% endfor %}],
+        backgroundColor: 'rgba(255, 99, 132, 0.7)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+            }]
+        };
+
+    // Configuração do gráfico de barra
+    var barraOptions = {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+
+    // Criando o gráfico de barra
+    var barraChart = new Chart(document.getElementById('barraChart'), {
+        type: 'bar',
+        data: barraData,
+        options: barraOptions
+    });
+
+        // Restante do código para os outros gráficos...
+    });
+</script>
+
+{% endblock %}
+
+{% block rodape %}
+
+{% endblock %}

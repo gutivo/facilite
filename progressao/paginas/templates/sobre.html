@@ -1,0 +1,59 @@
+{% extends 'modelo2.html' %}
+
+{% load static %}
+
+{% block titulo %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<style>
+.green-bar {
+background-color: #016166;
+position: fixed;
+top: 0;
+bottom: 0;
+width: 80px;
+z-index: 999;
+}
+</style>
+
+{% endblock %}
+
+{% block conteudo %}
+
+<!-- Adiciona a barra verde à esquerda -->
+<div class="green-bar" style="left: 0;"></div>
+
+<!-- Adiciona a barra verde à direita -->
+<div class="green-bar" style="right: 0;"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{% static 'img/conteudo1.png' %}" class="card-img-top" alt="Imagem 1">
+                <div class="card-body">
+                    <h5 class="card-title">Título 1</h5>
+                    <p class="card-text">Descrição ou conteúdo relacionado à imagem 1.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{% static 'img/conteudo2.png' %}" class="card-img-top" alt="Imagem 2">
+                <div class="card-body">
+                    <h5 class="card-title">Título 2</h5>
+                    <p class="card-text">Descrição ou conteúdo relacionado à imagem 2.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{% static 'img/conteudo3.png' %}" class="card-img-top" alt="Imagem 3">
+                <div class="card-body">
+                    <h5 class="card-title">Título 3</h5>
+                    <p class="card-text">Descrição ou conteúdo relacionado à imagem 3.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

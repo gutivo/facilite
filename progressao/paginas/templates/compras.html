@@ -1,0 +1,31 @@
+{% extends 'modelo2.html' %}
+{% load static %}
+
+{% block conteudo %}
+<div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    <h3>Pesquisa de Compras</h3>
+    <form action="{% url 'resultados_pesquisa' %}" method="GET">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="termoPesquisa">Termo de Pesquisa</label>
+                <input type="text" class="form-control" id="termoPesquisa" name="termoPesquisa"
+                    placeholder="Digite sua pesquisa">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="formatoResultado">Formato de Resultado</label>
+                <select id="formatoResultado" class="form-control" name="formatoResultado">
+                    <option value="html">HTML</option>
+                    <option value="xml">XML</option>
+                    <option value="json">JSON</option>
+                    <option value="csv">CSV</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Pesquisar</button>
+    </form>
+</div>
+{% endblock %}

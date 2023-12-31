@@ -1,0 +1,37 @@
+<!-- formulario.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emitir Certidões</title>
+</head>
+
+<body>
+
+    <h1>Emitir Certidões</h1>
+
+    <form id="formCertidoes" action="{% url 'emitir_certidoes' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label for="cnpj">CNPJ:</label>
+        <input type="text" id="cnpj" name="cnpj" required>
+
+        <label>Selecione as certidões desejadas:</label>
+        <div>
+            <input type="checkbox" id="caixaRegularidade" name="certidoes" value="caixa/regularidade">
+            <label for="caixaRegularidade">Regularidade CAIXA</label>
+
+            <input type="checkbox" id="mte" name="certidoes" value="mte/certidao-debitos">
+            <label for="mte">MTE</label>
+
+            <!-- Adicione mais checkboxes conforme necessário -->
+        </div>
+
+        <button type="submit">Emitir Certidões</button>
+    </form>
+
+</body>
+
+</html>

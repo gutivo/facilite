@@ -1,0 +1,24 @@
+<!-- links.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Links Extraídos</title>
+</head>
+
+<body>
+
+    <h1>Links Extraídos</h1>
+
+    <!-- Container para exibir os links -->
+    <div id="linksContainer">
+        {% for link in links %}
+        <a href="{{ link }}" target="_blank">{{ link }}</a><br>
+        {% endfor %}
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+{% extends 'modelo2.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block menu %}
+<!-- Código do menu -->
+<nav class="navbar navbar-expand-lg fixed-top">
+    <a class="navbar-brand" href="#">
+        <img src="{% static 'img/logofacilite.png' %}" alt="Logo" width="90" height="40">
+    </a>
+</nav>
+{% endblock %}
+
+{% block conteudo %}
+<div class="background-container">
+    <div class="overlay"></div> <!-- Elemento para cobrir a imagem de fundo -->
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-4">
+            <br>
+            <br>
+            <div class="card shadow-card">
+                <div class="card-body">
+
+                    {% if request.user.is_authenticated %}
+
+                    <h3 class="card-title">Ação Não Permitida</h3>
+                    <p class="lead">O usuário não está habilitado para acessar esta pagina!</p>
+           
+
+                    {% else %}
+
+                    <h3 class="card-title">Login</h3>
+                    <p class="card-text lead">“O sucesso é a soma de pequenos esforços repetidos dia após dia.” – Robert
+                        Collier.</p>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary">Entrar</button>
+                    </form>
+                </div>
+            </div>
+            {%endif%}
+        </div>
+    </div>
+</div>
+{% endblock %}

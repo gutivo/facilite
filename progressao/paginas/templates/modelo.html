@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block titulo %}
+    <title>Facilite</title>
+    {% endblock %}
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        /* Adicione estilos personalizados aqui, se necessário */
+        body {
+            padding-top: 56px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Estilo para o sidebar */
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #012021;
+            padding-top: 20px;
+            color: white;
+        }
+
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #ffffff;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        /* Estilo para o rodapé */
+        .rodape {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* Estilo para centralizar o conteúdo abaixo do sidebar */
+      
+
+/* Estilo para o menu */
+  .navbar {
+    background-color: #016166; /* Substitua pela cor desejada em formato hexadecimal, RGB, ou nome da cor */
+  }
+        
+  .navbar-brand {
+    color: rgb(242, 248, 140); /* Cor do texto */
+  }
+
+/* Estilo para os links do menu */
+.navbar-nav .nav-link {
+    color: white; /* Cor do texto */
+  }
+
+  /* Estilo para o link ativo */
+  .navbar-nav .nav-item.active .nav-link {
+    color: rgb(237, 237, 237); /* Cor do texto para o link ativo */
+  }
+.conteudo-centralizado {
+       margin-left: 250px;
+       /* Largura do sidebar */
+       padding: 20px;
+   }
+    </style>
+</head>
+
+<body>
+{% block menu %}
+<!-- Código do menu -->
+<nav class="navbar navbar-expand-lg fixed-top" style="height: 55px;">
+    <a class="navbar-brand" href="{% url 'inicio' %}">
+        <img src="{% static 'img/logofacilite.png' %}" alt="Logo" width="90" height="40">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+      {% if request.user.is_authenticated %}
+    <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'dash' %}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'tarefas' %}">Painel</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'tarefas' %}">Chamado</a>
+            </li>
+
+        </ul>
+    <div class="navbar-nav">
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 30px; height: 30px; overflow: hidden; border-radius: 50%;">
+                        <img src="{{ foto }}" alt="Logo" width="100%" height="100%" style="object-fit: cover;">
+                    </div>
+                    <span style="margin-left: 8px;">{{ request.user.username }}</span>
+                </div>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown"> 
+                <a class="dropdown-item" href="{% url 'perfil-atualizar' %}"> Perfil</a>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item">Sair</button>
+                </form>
+            </div>
+        </div>
+    </div>
+ {% else %}
+<div class="navbar-nav" href="{% url 'inicio' %}" >
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'inicio' %}">Inicio</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'sobre' %}">contato</a>
+    </li>
+    <div class="nav-item dropdown">
+        
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Colaborador <!-- Substitua pelo nome do usuário ou outra informação relevante -->
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'login' %}">Entrar</a>
+        </div>
+    </div>
+</div>
+ {% endif %}
+</nav>
+{% endblock %}
+
+    {% block destaque %}
+
+    {% endblock %}
+
+    <div class="container-fluid">
+        <div class="row">
+            {% block sidebar %}
+           
+            {% endblock %}
+
+            <!-- Adicionando a classe para centralizar o conteúdo -->
+            <div class="conteudo-centralizado">
+            {% block conteudo %}
+         
+                <!-- Código do conteúdo principal -->
+                <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <h3>Template de Modelo</h3>
+                </div>
+          
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    {% block rodape %}
+    <div class="rodape" style="background-color: rgb(217, 179, 75);">
+        <!-- Código do rodapé -->
+        <p style="color: rgb(255, 255, 255);">Desenvolvido: Tiago Ferreira da Costa | Contato: (62) 982891595</p>
+    </div>
+    {% endblock %}
+
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>
