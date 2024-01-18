@@ -10,8 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
-import django_heroku
-import gunicorn
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'paginas.apps.PaginasConfig',
+    'dispensas.apps.DispensasConfig',
     'cadastros.apps.CadastrosConfig',
     'usuarios.apps.UsuariosConfig',
     'django_cleanup.apps.CleanupConfig',
@@ -150,5 +149,3 @@ MEDIA_URL ="/uploads/"
 LOGIN_REDIRECT_URL = 'tarefas'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
-
-django_heroku.settings(locals())

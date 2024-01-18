@@ -142,7 +142,7 @@ class SobreView(TemplateView):
 
 class Minhatarefas(GroupRequiredMixin,LoginRequiredMixin,TemplateView):
     login_url = reverse_lazy('login')
-    group_required = [u"administrador",u"colaborador"]
+    group_required = [u"administrador",u"colaborador", u"cliente"]
     template_name = "paineltarefas.html"   
 
     def get_context_data(self, **kwargs):

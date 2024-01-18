@@ -1,0 +1,330 @@
+<!-- formabrir.html -->
+{% extends 'modelo2.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block conteudo %}
+<style>
+    body {
+        background: url('{% static "img/bbb.avif" %}') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .card {
+        margin-bottom: 20px;
+        box-shadow: rgb(23, 23, 23);
+    }
+</style>
+<div class="card">
+    <div class="card-body">
+<form method="post" enctype="multipart/form-data">
+   
+    {% csrf_token %}
+    {{ form|crispy }}
+    <hr>
+    <br>
+<strong> Tabela itens Solicitação</strong>
+    <!-- Tabela para preenchimento no HTML -->
+    <table id="tabela-dados">
+        <thead>
+            <tr>
+                <th>Selecionar</th>
+                <th>Índice</th>
+                <th>Unidade</th>
+                <th>Quantidade</th>
+                <th>Descrição</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Linhas da tabela serão adicionadas dinamicamente com JavaScript -->
+        </tbody>
+    </table>
+
+<!-- tabela solicitação -->
+    <input type="file" name="excel_file" accept=".xls,.xlsx">
+    <!-- Botão para adicionar linha à tabela -->
+    <button type="button" onclick="adicionarLinha()">Adicionar Linha</button>
+
+    <!-- Botão para remover linhas -->
+    <button type="button" onclick="removerLinhas()">Remover Linhas</button>
+    
+    <hr>
+    <br>
+    
+<strong> Tabela Empresas</strong>
+<!-- Tabela para preenchimento no HTML -->
+<table id="tabela-dados3">
+    <thead>
+        <tr>
+            <th>Selecionar</th>
+            <th>Índice</th>
+            <th>Empresas</th>
+            <th>Valor Proposta</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Linhas da tabela serão adicionadas dinamicamente com JavaScript -->
+    </tbody>
+</table>
+
+<!-- tabela solicitação -->
+<input type="file" name="excel_file3" accept=".xls,.xlsx">
+<!-- Botão para adicionar linha à tabela -->
+<button type="button" onclick="adicionarLinha3()">Adicionar Linha</button>
+
+<!-- Botão para remover linhas -->
+<button type="button" onclick="removerLinhas3()">Remover Linhas</button>
+
+<hr>
+<br>
+
+<strong>Tabela Parametrização</strong>
+<!-- Tabela para preenchimento no HTML -->
+<table id="tabela-dados4">
+    <thead>
+        <tr>
+            <th>Selecionar</th>
+            <th>Índice</th>
+            <th>Unidade</th>
+            <th>Quantidade</th>
+            <th>Descrição</th>
+            <th>Parametrização</th>
+            <th>Valor Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Linhas da tabela serão adicionadas dinamicamente com JavaScript -->
+    </tbody>
+</table>
+
+<!-- tabela solicitação -->
+<input type="file" name="excel_file4" accept=".xls,.xlsx">
+<!-- Botão para adicionar linha à tabela -->
+<button type="button" onclick="adicionarLinha4()">Adicionar Linha</button>
+
+<!-- Botão para remover linhas -->
+<button type="button" onclick="removerLinhas4()">Remover Linhas</button>
+
+
+
+<hr>
+<br>
+
+    <!-- Botão para gerar arquivo -->
+    <button type="submit">Gerar Arquivo</button>
+</form>
+
+    </div>
+</div>
+
+<script>
+    // Função solicitação tabela
+    function adicionarLinha() {
+        var tabela = document.getElementById('tabela-dados').getElementsByTagName('tbody')[0];
+        var indice = tabela.getElementsByTagName('tr').length + 1;
+
+        var novaLinha = tabela.insertRow(-1);
+        novaLinha.innerHTML = `
+            <td><input type="checkbox" name="selecionar_${indice}" /></td>
+            <td>${indice}</td>
+            <td><input type="text" name="unidade_${indice}" /></td>
+            <td><input type="number" name="quantidade_${indice}" /></td>
+            <td><input type="text" name="descricao_${indice}" /></td>
+        `;
+    }
+
+    // Função para remover linhas selecionadas
+    function removerLinhas() {
+        var tabela = document.getElementById('tabela-dados').getElementsByTagName('tbody')[0];
+        var linhas = tabela.getElementsByTagName('tr');
+
+        for (var i = linhas.length - 1; i >= 0; i--) {
+            var checkbox = linhas[i].getElementsByTagName('input')[0];
+            if (checkbox.checked) {
+                tabela.removeChild(linhas[i]);
+            }
+        }
+
+        // Reorganizar índices e nomes dos campos após a remoção
+        reorganizarIndicesENomes();
+    }
+
+    // Função para reorganizar índices e nomes dos campos após a remoção de uma linha
+    function reorganizarIndicesENomes() {
+        var tabela = document.getElementById('tabela-dados').getElementsByTagName('tbody')[0];
+        var linhas = tabela.getElementsByTagName('tr');
+
+        for (var i = 0; i < linhas.length; i++) {
+            var indiceCelula = linhas[i].getElementsByTagName('td')[1];
+            var checkboxes = linhas[i].getElementsByTagName('input');
+
+            // Atualizar índice
+            indiceCelula.innerHTML = i + 1;
+
+            // Atualizar nomes dos campos
+            for (var j = 0; j < checkboxes.length; j++) {
+                var nomeCampo = checkboxes[j].getAttribute('name');
+                if (nomeCampo) {
+                    checkboxes[j].setAttribute('name', nomeCampo.replace(/\d+/, i + 1));
+                }
+            }
+        }
+    }
+</script>
+<script>
+    // Função solicitação tabela
+    function adicionarLinha3() {
+        var tabela = document.getElementById('tabela-dados3').getElementsByTagName('tbody')[0];
+        var indice = tabela.getElementsByTagName('tr').length + 1;
+
+        var novaLinha = tabela.insertRow(-1);
+        novaLinha.innerHTML = `
+            <td><input type="checkbox" name="selecionar_${indice}" /></td>
+            <td>${indice}</td>
+            <td><input type="text" name="empresas_${indice}" /></td>
+            <td><input type="text" name="empvt_${indice}" /></td>
+        `;
+    }
+
+    // Função para remover linhas selecionadas
+    function removerLinhas3() {
+        var tabela = document.getElementById('tabela-dados3').getElementsByTagName('tbody')[0];
+        var linhas = tabela.getElementsByTagName('tr');
+
+        for (var i = linhas.length - 1; i >= 0; i--) {
+            var checkbox = linhas[i].getElementsByTagName('input')[0];
+            if (checkbox.checked) {
+                tabela.removeChild(linhas[i]);
+            }
+        }
+
+        // Reorganizar índices e nomes dos campos após a remoção
+        reorganizarIndicesENomes3();
+    }
+
+    // Função para reorganizar índices e nomes dos campos após a remoção de uma linha
+    function reorganizarIndicesENomes3() {
+        var tabela = document.getElementById('tabela-dados3').getElementsByTagName('tbody')[0];
+        var linhas = tabela.getElementsByTagName('tr');
+
+        for (var i = 0; i < linhas.length; i++) {
+            var indiceCelula = linhas[i].getElementsByTagName('td')[1];
+            var checkboxes = linhas[i].getElementsByTagName('input');
+
+            // Atualizar índice
+            indiceCelula.innerHTML = i + 1;
+
+            // Atualizar nomes dos campos
+            for (var j = 0; j < checkboxes.length; j++) {
+                var nomeCampo = checkboxes[j].getAttribute('name');
+                if (nomeCampo) {
+                    checkboxes[j].setAttribute('name', nomeCampo.replace(/\d+/, i + 1));
+                }
+            }
+        }
+    }
+</script>
+<script>
+    // Função solicitação tabela
+    function adicionarLinha4() {
+        var tabela = document.getElementById('tabela-dados4').getElementsByTagName('tbody')[0];
+        var indice = tabela.getElementsByTagName('tr').length + 1;
+
+        var novaLinha = tabela.insertRow(-1);
+        novaLinha.innerHTML = `
+            <td><input type="checkbox" name="selecionar_${indice}" /></td>
+            <td>${indice}</td>
+            <td><input type="text" name="und_${indice}" /></td>
+            <td><input type="number" name="qnt_${indice}" /></td>
+            <td><input type="text" name="descr_${indice}" /></td>
+            <td><input type="text" name="param_${indice}" /></td>
+            <td><input type="text" name="vt_${indice}" /></td>
+        `;
+    }
+
+    // Função para remover linhas selecionadas
+    function removerLinhas4() {
+        var tabela = document.getElementById('tabela-dados4').getElementsByTagName('tbody')[0];
+        var linhas = tabela.getElementsByTagName('tr');
+
+        for (var i = linhas.length - 1; i >= 0; i--) {
+            var checkbox = linhas[i].getElementsByTagName('input')[0];
+            if (checkbox.checked) {
+                tabela.removeChild(linhas[i]);
+            }
+        }
+
+        // Reorganizar índices e nomes dos campos após a remoção
+        reorganizarIndicesENomes4();
+    }
+
+    // Função para reorganizar índices e nomes dos campos após a remoção de uma linha
+    function reorganizarIndicesENomes4() {
+        var tabela = document.getElementById('tabela-dados4').getElementsByTagName('tbody')[0];
+        var linhas = tabela.getElementsByTagName('tr');
+
+        for (var i = 0; i < linhas.length; i++) {
+            var indiceCelula = linhas[i].getElementsByTagName('td')[1];
+            var checkboxes = linhas[i].getElementsByTagName('input');
+
+            // Atualizar índice
+            indiceCelula.innerHTML = i + 1;
+
+            // Atualizar nomes dos campos
+            for (var j = 0; j < checkboxes.length; j++) {
+                var nomeCampo = checkboxes[j].getAttribute('name');
+                if (nomeCampo) {
+                    checkboxes[j].setAttribute('name', nomeCampo.replace(/\d+/, i + 1));
+                }
+            }
+        }
+    }
+</script>
+           
+
+<style>
+    .card {
+    width: 70%;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+form {
+    margin-bottom: 0; /* Para remover a margem inferior padrão do formulário */
+}
+
+#tabela-dados,#tabela-dados3,#tabela-dados4 {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+#tabela-dados th, #tabela-dados td,#tabela-dados3 th, #tabela-dados3 ,#tabela-dados4 th, #tabela-dados4 td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #087777;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+</style>
+{% endblock %}

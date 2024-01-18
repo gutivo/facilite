@@ -15,6 +15,16 @@
 
 <div class="container mt-4">
     <div class="row">
+        <!-- Adicione o formulário de seleção de ano -->
+        <form method="GET" action="{% url 'dash' %}" class="mb-3">
+            <label for="year">Selecione o Ano:</label>
+            <select name="year" id="year">
+                {% for year in available_years %}
+                <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Aplicar</button>
+        </form>
 
         <!-- Gráfico de Coluna -->
         <div class="col-md-6">
@@ -28,14 +38,14 @@
             </div>
         </div>
 
-        <!-- Gráfico de Pizza -->
+        <!-- Gráfico de Barra Horizontal -->
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title">Status total dos Processos</h5>
                 </div>
-                <div class="card-body" style="height: 290px; width: 300px;">
-                    <canvas id="pizzaChart"></canvas>
+                <div class="card-body">
+                    <canvas id="barraHorizontalChart"></canvas>
                 </div>
             </div>
         </div>
@@ -51,7 +61,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -60,7 +69,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         // Dados para o gráfico de coluna
         var colunaData = {
-            labels: [{% for item in quantidades_por_mes %}'{{  item.data__month }}', {% endfor %}],
+            labels: [{% for item in quantidades_por_mes %}'{{ item.data__month }}', {% endfor %}],
         datasets: [{
             label: 'Quantidade por Mês',
             data: [{% for item in quantidades_por_mes %}{{ item.quantidade }}, {% endfor %}],
@@ -86,50 +95,56 @@
         options: colunaOptions
     });
 
-    // Dados para o gráfico de pizza
-    var pizzaData = {
+    // Dados para o gráfico de barra horizontal
+    var barraHorizontalData = {
         labels: [{% for item in quantidades_por_status %}'{{ item.status }}', {% endfor %}],
     datasets: [{
+        label: 'status',
         data: [{% for item in quantidades_por_status %}{{ item.quantidade }}, {% endfor %}],
         backgroundColor: [
-            'rgba(255, 99, 132, 0.7)',
-            'rgba(75, 192, 192, 0.7)',
-            'rgba(255, 205, 86, 0.7)',
-            'rgba(54, 162, 235, 0.7)',
-            'rgba(153, 102, 255, 0.7)',
+            'rgba(54, 162, 235, 0.7)',   // A Receber - Azul
+            'rgba(255, 99, 132, 0.7)',  // Cancelada - Vermelho
+            'rgba(75, 192, 192, 0.7)',  // Concluído - Verde
+            'rgba(255, 205, 86, 0.7)',  // Em Andamento - Amarelo
+            'rgba(153, 102, 255, 0.7)', // Recebido - Roxo
         ],
             borderColor: [
+                'rgba(54, 162, 235, 1)',
                 'rgba(255, 99, 132, 1)',
                 'rgba(75, 192, 192, 1)',
                 'rgba(255, 205, 86, 1)',
-                'rgba(54, 162, 235, 1)',
                 'rgba(153, 102, 255, 1)',
             ],
                 borderWidth: 1
             }]
         };
 
-    // Configuração do gráfico de pizza
-    var pizzaOptions = {};
+    // Configuração do gráfico de barra horizontal
+    var barraHorizontalOptions = {
+        indexAxis: 'y',
+        scales: {
+            x: {
+                beginAtZero: true
+            }
+        }
+    };
 
-    // Criando o gráfico de pizza
-    var pizzaChart = new Chart(document.getElementById('pizzaChart'), {
-        type: 'pie',
-        data: pizzaData,
-        options: pizzaOptions
-    });
+    // Criando o gráfico de barra horizontal
+    var barraHorizontalChart = new Chart(document.getElementById('barraHorizontalChart'), {
+        type: 'bar',
+        data: barraHorizontalData,
+        options: barraHorizontalOptions
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        // Dados para o gráfico de barra
-        var barraData = {
-            labels: [{% for item in quantidades_por_campo %}'{{ item.campo__nome }}', {% endfor %}],
-        datasets: [{
-            label: 'Quantidade por Campo',
-            data: [{% for item in quantidades_por_campo %}{{ item.quantidade }}, {% endfor %}],
+    // Dados para o gráfico de barra
+    var barraData = {
+        labels: [{% for item in quantidades_por_campo %}'{{ item.campo__nome }}', {% endfor %}],
+    datasets: [{
+        label: 'Quantidade por Campo',
+        data: [{% for item in quantidades_por_campo %}{{ item.quantidade }}, {% endfor %}],
         backgroundColor: 'rgba(255, 99, 132, 0.7)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1
+            borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
             }]
         };
 
@@ -148,8 +163,6 @@
         data: barraData,
         options: barraOptions
     });
-
-        // Restante do código para os outros gráficos...
     });
 </script>
 

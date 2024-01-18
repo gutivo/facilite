@@ -8,7 +8,7 @@
 <div class="sidebar">
     <br>
     <br>
-   
+
 </div>
 {% endblock %}
 
@@ -62,146 +62,147 @@
     }
 </style>
 <div class="container">
-  
 
-    
-<div class="atividade-card">
-    <div class="coluna-imagem">
-        <div style="width: 90px; height: 90px; overflow: hidden; border-radius: 50%;">
-            <img src="{{ fotoorgao }}" alt="Logo">
-        </div>
-    </div>
 
-    <div class="coluna-dados">
-        <div>
-            <h3 class="titulo">Órgão/Empresa: {{ atividade.campo.nome }}</h3>
-        </div>
 
-        <div class="info">
-            <p><strong>Atribuição:</strong> {{ atividade.numero }}</p>
-            <p><strong>Descrição:</strong> {{ atividade.descricao }}</p>
-            <p><strong>Data:</strong> {{ atividade.data }}</p>
-            <p><strong>Prazo:</strong> {{ atividade.prazo }}</p>
-        </div>
-    </div>
-</div>
-<div class="atividade-card">
-    <!-- Seção de Alteração de Status -->
-    <div class="coluna-dados status-section">
-        <p class="info"><strong>Situação:</strong></p>
-        <p class="lead">
-            Caso tenha ocorrido mudança no processo, altere o status.
-        </p>
-        <form action="" method="POST">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button type="submit" class="btn btn-primary">Alterar</button>
-        </form>
-    </div>
-</div>
-
-  
-        <div class="atividade-card">
-            <!-- ... Seção de Dados ... -->
-    
-            <!-- Seção de Alteração de Status -->
-            <div class="status-section">
-                <!-- ... Conteúdo da Seção de Alteração de Status ... -->
+    <div class="atividade-card">
+        <div class="coluna-imagem">
+            <div style="width: 90px; height: 90px; overflow: hidden; border-radius: 50%;">
+                <img src="{{ fotoorgao }}" alt="Logo">
             </div>
+        </div>
+
+        <div class="coluna-dados">
+            <div>
+                <h3 class="titulo">Órgão/Empresa: {{ atividade.campo.nome }}</h3>
+            </div>
+
+            <div class="info">
+                <p><strong>Atribuição:</strong> {{ atividade.numero }}</p>
+                <p><strong>Descrição:</strong> {{ atividade.descricao }}</p>
+                <p><strong>Data:</strong> {{ atividade.data }}</p>
+                <p><strong>Prazo:</strong> {{ atividade.prazo }}</p>
+            </div>
+        </div>
+    </div>
     
-            <!-- Seção de Comentários -->
-            <div class="comentarios-section">
-                <h4>Comentários</h4>
-    
-                <!-- Exibe formulário para adicionar comentário -->
-                <form method="post" enctype="multipart/form-data" class="comentario-form">
-                    {% csrf_token %}
-                    {{ comentario_form|crispy }}
-                    <button type="submit" class="btn btn-primary">Adicionar Comentário</button>
-                  
-                </form>
-    <br>
-                <!-- Exibe os comentários existentes -->
-                {% for comentario in atividade.comentario_set.all %}
-                <div class="comentario-box">
-                    <div class="comentario-header">
-                        <span class="comentario-autor">{{ comentario.autor.username }}</span>
-                        <span class="comentario-data">{{ comentario.data_publicacao|date:"F j, Y H:i" }}</span>
-                    </div>
-                    <div class="comentario-corpo">
-                        <p>{{ comentario.texto }}</p>
-                        {% if comentario.arquivo %}
-                        <a href="{{ comentario.arquivo.url }}" target="_blank">Ver Arquivo</a>
-                        {% endif %}
-                    </div>
+    <div class="atividade-card">
+        <!-- Seção de Alteração de Status -->
+        <div class="coluna-dados status-section">
+            <p class="info"><strong>Situação:</strong></p>
+            <p class="lead">
+                Caso tenha ocorrido mudança no processo, altere o status.
+            </p>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" name="alterar_status" value="Alterar" class="btn btn-primary">
+            </form>
+        </div>
+
+    </div>
+
+
+    <div class="atividade-card">
+        <!-- ... Seção de Dados ... -->
+
+        <!-- Seção de Alteração de Status -->
+        <div class="status-section">
+            <!-- ... Conteúdo da Seção de Alteração de Status ... -->
+        </div>
+
+        <!-- Seção de Comentários -->
+        <div class="comentarios-section">
+            <h4>Comentários</h4>
+
+            <!-- Exibe formulário para adicionar comentário -->
+            <form method="post" enctype="multipart/form-data" class="comentario-form">
+                {% csrf_token %}
+                {{ comentario_form|crispy }}
+                <input type="submit" name="adicionar_comentario" value="Adicionar Comentário" class="btn btn-primary">
+            </form>
+            <br>
+            <!-- Exibe os comentários existentes -->
+            {% for comentario in atividade.comentario_set.all %}
+            <div class="comentario-box">
+                <div class="comentario-header">
+                    <span class="comentario-autor">{{ comentario.autor.username }}</span>
+                    <span class="comentario-data">{{ comentario.data_publicacao|date:"F j, Y H:i" }}</span>
                 </div>
-                {% endfor %}
+                <div class="comentario-corpo">
+                    <p>{{ comentario.texto }}</p>
+                    {% if comentario.arquivo %}
+                    <a href="{{ comentario.arquivo.url }}" target="_blank">Ver Arquivo</a>
+                    {% endif %}
+                </div>
             </div>
+            {% endfor %}
         </div>
     </div>
-    <style>
-.container {
-margin: 20px;
-}
+</div>
+<style>
+    .container {
+        margin: 20px;
+    }
 
-.atividade-card {
-background-color: #f8f9fa;
-padding: 20px;
-border-radius: 8px;
-margin-bottom: 20px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-transition: box-shadow 0.3s ease-in-out;
-}
+    .atividade-card {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease-in-out;
+    }
 
-.atividade-card:hover {
-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
+    .atividade-card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
 
-.status-section,
-.comentarios-section {
-margin-top: 20px;
-}
+    .status-section,
+    .comentarios-section {
+        margin-top: 20px;
+    }
 
-.comentario-box {
-border: 1px solid #ddd;
-border-radius: 8px;
-padding: 15px;
-margin-bottom: 15px;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-transition: box-shadow 0.3s ease-in-out;
-}
+    .comentario-box {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease-in-out;
+    }
 
-.comentario-box:hover {
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+    .comentario-box:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
 
-.comentario-header {
-display: flex;
-justify-content: space-between;
-font-weight: bold;
-margin-bottom: 10px;
-}
+    .comentario-header {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
 
-.comentario-autor {
-color: #007bff;
-}
+    .comentario-autor {
+        color: #007bff;
+    }
 
-.comentario-data {
-color: #6c757d;
-}
+    .comentario-data {
+        color: #6c757d;
+    }
 
-.comentario-corpo {
-margin-top: 10px;
-}
+    .comentario-corpo {
+        margin-top: 10px;
+    }
 
-/* Estilos para o formulário de comentário */
-.comentario-form {
-margin-top: 20px;
-}
+    /* Estilos para o formulário de comentário */
+    .comentario-form {
+        margin-top: 20px;
+    }
 
-.comentario-form button {
-margin-top: 10px;
-}
+    .comentario-form button {
+        margin-top: 10px;
+    }
 </style>
 {% endblock %}
 
